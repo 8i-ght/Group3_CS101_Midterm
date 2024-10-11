@@ -19,6 +19,17 @@ def house_introduction():
     print("3. Tiger House: Honor, bravery, loyalty.")
     print("4. Fox House: Cunning, wit, charm.\n")
 
+# Create validation function to ensure that the user input is within the guidelines
+# Display the question to the user if the user input is valid add the score if not valid display an error message
+def validate_input(question_prompt, valid_options):
+    while True:
+        choice = input(question_prompt)
+        if choice in valid_options:
+            return choice
+        else:
+            print("Invalid input. Please try again.")
+
+
 def quiz_questions():
     # Ask the user a series of questions inside the array to determine their house
     questions = [
@@ -34,29 +45,51 @@ def quiz_questions():
     ]
 
     # Create a dictionary to store the scores of each house
-scores = {"Dragon House": 0, "Phoenix House": 0, "Tiger House": 0, "Fox House": 0}
+    scores = {"Dragon House": 0, "Phoenix House": 0, "Tiger House": 0, "Fox House": 0}
 
-# Create validation function to ensure that the user input is within the guidelines
-# Display the question to the user if the user input is valid add the score if not valid display an error message
-def validate_input(prompt, valid_options):
+
+    # Loop through the questions and add the score to the correct house
+    # Using the validate_input function to ensure the user input is valid
+    # Question arugment shows the user the question prompt the array of numbers are the valid options
+    for question in questions:
+        answer = validate_input(question, ['1', '2', '3', '4'])
+        if answer == '1':
+            scores["Dragon House"] += 1
+        elif answer == '2':
+            scores["Phoenix House"] += 1
+        elif answer == '3':
+            scores["Tiger House"] += 1
+        elif answer == '4':
+            scores["Fox House"] += 1
+
+    assign_user(scores)
+    
+
+# Assign the user to the house with the highest score
+def assign_user(scores):
+    highest_score = -1
+    assigned_house = None
+# For loop to go through the the key values in the scores dictionary
+    for house, score in scores.items():
+        if score > highest_score:
+            highest_score = score
+            assigned_house = house
+
+    print(f"Congratulations! You have been assigned to {assigned_house}!")
+
+
+
+# Main function to run the program 
+def main():
     while True:
-        choice = input(prompt)
-        if choice in valid_options:
-            return choice
-        else:
-            print("Invalid input. Please try again.")
+        starting_menu()
+        choice = validate_input("Please choose an option (1-3): ", ['1', '2', '3'])
+        if choice == '1':
+            house_introduction()
+        elif choice == '2':
+            quiz_questions()
+        elif choice == '3':
+            print("Thank you for taking the quiz. Goodbye!")
+            break
 
-# Loop through the questions and add the score to the correct house
-# Using the validate_input function to ensure the user input is valid
-# Question arugment shows the user the question prompt the array of numbers are the valid options
-for question in questions:
-    answer = validate_input(question, ['1', '2', '3', '4'])
-    if answer == '1':
-        scores["Dragon House"] += 1
-    elif answer == '2':
-        scores["Phoenix House"] += 1
-    elif answer == '3':
-        scores["Tiger House"] += 1
-    elif answer == '4':
-        scores["Fox House"] += 1
-
+main()
